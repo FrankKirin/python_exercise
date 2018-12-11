@@ -1,5 +1,6 @@
-# matrix_p = [30, 35, 35, 15, 15, 5, 5, 10, 10, 20, 20, 25]
-matrix_p = [10, 100, 100, 5, 5, 50]
+matrix_p = [30, 35, 35, 15, 15, 5, 5, 10, 10, 20, 20, 25]
+# matrix_p = [10, 100, 100, 5, 5, 50]
+
 total_matrix_count = int(len(matrix_p)/2)
 
 def calculate_multi_time(first_matrix, last_matrix):
