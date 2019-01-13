@@ -77,22 +77,26 @@ def createGraph(numVertex):
     return graph
 
 
-graph = np.array([[np.inf,4,6,6,np.inf,np.inf,np.inf],
-                 [4,np.inf,1,7,np.inf,np.inf,np.inf],
-                 [np.inf,np.inf,np.inf,np.inf,6,4,np.inf],
-                 [np.inf,np.inf,2,np.inf,np.inf,5,np.inf],
-                 [np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,6],
-                 [np.inf,np.inf,np.inf,np.inf,1,np.inf,8],
-                 [np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf]])
-dist,previous = dijkstra_heap(graph,0)
-showPath(dist, previous, 0, 6)
-    
+# graph = np.array([[np.inf,4,6,6,np.inf,np.inf,np.inf],
+#                   [4,np.inf,1,7,np.inf,np.inf,np.inf],
+#                   [np.inf,np.inf,np.inf,np.inf,6,4,np.inf],
+#                   [np.inf,np.inf,2,np.inf,np.inf,5,np.inf],
+#                   [np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,6],
+#                   [np.inf,np.inf,np.inf,np.inf,1,np.inf,8],
+#                   [np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf]])
+# dist,previous = dijkstra(graph,0)
+# for i in range(6):
+#     showPath(dist, previous, 0, i+1)
+# #dist,previous = dijkstra_heap(graph,0)
+# #for i in range(6):
+# #    showPath(dist, previous, 0, i+1)
+
 a=createGraph(1000)
 tib = clock()
 dijkstra(a,0)
 tie = clock()
-print('未优化用时: {}ms'.format(1000*(tie-tib)))
+print('{}ms'.format(1000*(tie-tib)))
 tib = clock()
 dijkstra_heap(a,0)
 tie = clock()
-print('优化后用时: {}ms'.format(1000*(tie-tib)))
+print('{}ms'.format(1000*(tie-tib)))
