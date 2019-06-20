@@ -1,30 +1,26 @@
 """
     Apply 2-2-1 perceptron to iris dataset from scratch
-    Author: Frank
+    Author: FrankYe
 """
 
 import numpy as np
 import math
-# from scipy.io import loadmat
 from sklearn import datasets
 from sklearn.preprocessing import MinMaxScaler
 
-# iris = datasets.load_iris()
-# X = iris.data[:100, :2]
-# print(X)
-# y = iris.target
-# print(X)
+'''
+    从sklearn导入鸢尾花数据集，由于2-2-1网络结构，
+    取鸢尾花数据集的前两列属性，以及前100条数据
+'''
+iris = datasets.load_iris()
+X = iris.data[:100, :2]
+y = iris.target[:100]
 
-# X = MinMaxScaler().fit_transform(X)
+# 标准化初始数据
+X = MinMaxScaler().fit_transform(X)
 
-# X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-# y = np.array([[0], [1], [1], [0]])
-X = np.array([[1, 1]])
-y = np.array([[0]])
-# w1 = np.array([[1.0, 1.0], [-1.0, -1.0]])
-# w1 = np.array([[0.11234, 1.234], [0.99921, 12.13]])
+# 设定网络权重
 w1 = np.array([[1.0, 1.0], [1.0, 1.0]])
-# w2 = np.array([[0.5], [0.5]])
 w2 = np.array([[1.0], [1.0]])
 
 
@@ -72,20 +68,19 @@ def update_weight(loss, x, w1, w2, ly2_out, learning_rate=0.01):
     loss_yhat_deriv = loss
     zp = ly2_out.dot(w2)
     yhat_sigmoid_deriv = sigmoid_deriv(zp)
-    print('ly2_out shape is ', ly2_out.shape)
     sigmoid_w2_deriv = ly2_out
     w2_new = w2 - learning_rate * loss_yhat_deriv * yhat_sigmoid_deriv * np.transpose(sigmoid_w2_deriv)
-    
-    # print('w1 without update', w1)
     # update weight1
-    # for col in range(w1.shape[0]):
-    #     w1[:, [col]] -= learning_rate * loss_yhat_deriv * yhat_sigmoid_deriv * w2[col] * sigmoid_deriv(x.dot(w1[:, [col]])) * x[col]
+    for col in range(w1.shape[0]):
+        w1[:, [col]] -= learning_rate * loss_yhat_deriv * yhat_sigmoid_deriv * w2[col] * sigmoid_deriv(x.dot(w1[:, [col]])) * x[col]
     return w2_new, w1
 
 
 if __name__ == '__main__':
-    n_epoch = 2
+    n_epoch = 200
     for epoch in range(n_epoch):
+        print('=================================')
+        print('epoch is {}'.format(epoch + 1))
         total_loss = 0
         print('total loss start is', total_loss)
         for i in range(X.shape[0]):
@@ -94,8 +89,12 @@ if __name__ == '__main__':
             ly3_out = normal_layer(ly2_out, w2, np.array(-1.5))
             loss = get_loss(ly3_out, y[i])
             total_loss += loss
-            # w2_new, w1_new = update_weight(loss, ly1_out, w1, w2, ly2_out, learning_rate=0.01)
-            # w2, w1 = w2_new, w1_new
-        w2_new, w1_new = update_weight(total_loss, ly1_out, w1, w2, ly2_out, learning_rate=0.01)
+            w2_new, w1_new = update_weight(loss, ly1_out, w1, w2, ly2_out, learning_rate=0.0001)
+            w2, w1 = w2_new, w1_new
         w2, w1 = w2_new, w1_new
         print('total loss is {}'.format(total_loss))
+    train_w1, train_w2 = w1, w2
+
+    # 200轮训练后的权重
+    print('weight1 of model is', w1)
+    print('weight2 of model is', w2)
